@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
 # My
 .idea
 
@@ -49,6 +50,7 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+
 
 # Translations
 *.mo
