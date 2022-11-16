@@ -23,6 +23,3 @@ for password in listpasswords:
     if response_text == "You are authorized":
         print(f'Верный пароль "{password}"')
         break
-
-
-
