@@ -21,8 +21,8 @@ class TestHomeworkHeadersTes:
                 "User-Agent": f"{user_agent}"}
         )
         # print(response.json())
-        # print(response.json()["user_agent"])
         # print(f"При user_agent:'{user_agent}'")
+        # print(response.json()["user_agent"])
         assert response.json()["user_agent"] == user_agent,  \
             'При user_agent:"' +user_agent[:10]+ ' ..." в ответе приходит некорректный user_agent "' +(response.json()["user_agent"])+ '"'
         assert response.json()["platform"] == platform,  \
