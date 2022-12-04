@@ -60,3 +60,5 @@ class Assertions:
             assert False, f"Response is not in JSON format. Response text is '{response.text}'"
 
         assert expected_massage in response_as_dict, f"Response JSON doesn't have key '{name}'"
+
+
