@@ -13,7 +13,7 @@ class TestUserRegister(BaseCase):
         data = self.prepere_registration_data()
 
         response = requests.post("https://playground.learnqa.ru/api/user/", data=data)
-
+        print(response.text)
         Assertions.assert_code_status(response, 200)
         Assertions.assert_json_has_key(response, "id")
 
