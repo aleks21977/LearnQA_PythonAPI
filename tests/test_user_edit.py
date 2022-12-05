@@ -1,13 +1,13 @@
-import requests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
-from requests_toolbelt.utils import dump
+from lib.my_requests import MyRequests
+
 
 class TestUserEdit(BaseCase):
     def test_edit_just_created_user(self):
         # REGISTER
         register_data = self.prepere_registration_data()
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_data)
+        response1 = MyRequests.post("/user/", data=register_data)
         Assertions.assert_code_status(response1, 200)
         Assertions.assert_json_has_key(response1, "id")
 
@@ -21,7 +21,7 @@ class TestUserEdit(BaseCase):
             'email': email,
             'password': password
         }
-        response2 = requests.post("https://playground.learnqa.ru/api/user/login", data=login_data)
+        response2 = MyRequests.post("/user/login", data=login_data)
 
         auth_sid = self.get_cookie(response2, "auth_sid")
         token = self.get_header(response2, "x-csrf-token")
@@ -30,8 +30,8 @@ class TestUserEdit(BaseCase):
         # EDIT
         new_name = "Changed Name"
 
-        response3 = requests.put(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response3 = MyRequests.put(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid},
             data={"firstName": new_name}
@@ -40,8 +40,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response3, 200)
 
         # GET
-        response4 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response4 = MyRequests.get(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -57,7 +57,7 @@ class TestUserEdit(BaseCase):
     def test_edit2_just_created_user_without_autorise(self):
         # REGISTER
         register_data = self.prepere_registration_data()
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_data)
+        response1 = MyRequests.post("/user/", data=register_data)
 
         Assertions.assert_code_status(response1, 200)
         Assertions.assert_json_has_key(response1, "id")
@@ -67,8 +67,8 @@ class TestUserEdit(BaseCase):
         # EDIT
         new_name = "Changed Name"
 
-        response3 = requests.put(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response3 = MyRequests.put(
+            f"/user/{user_id}",
             data={"firstName": new_name}
         )
 
@@ -81,7 +81,7 @@ class TestUserEdit(BaseCase):
     def test_edit_anothe_user_just_created_user(self):
         # REGISTER
         register_data = self.prepere_registration_data()
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_data)
+        response1 = MyRequests.post("/user/", data=register_data)
         print(response1.text)
 
         Assertions.assert_code_status(response1, 200)
@@ -97,7 +97,7 @@ class TestUserEdit(BaseCase):
             'email': 'learnqa12042022165017@example.com',
             'password': '123'
         }
-        response2 = requests.post("https://playground.learnqa.ru/api/user/login", data=login_data)
+        response2 = MyRequests.post("/user/login", data=login_data)
 
         auth_sid = self.get_cookie(response2, "auth_sid")
         token = self.get_header(response2, "x-csrf-token")
@@ -105,8 +105,8 @@ class TestUserEdit(BaseCase):
         print(response2.text)
 
         # GET
-        response6 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id2}",
+        response6 = MyRequests.get(
+            f"/user/{user_id2}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -115,8 +115,8 @@ class TestUserEdit(BaseCase):
         # EDIT - запрос на редактирование отрабатывает корректно с любым id в том числе и без него
         new_name = "ChangedName113"
 
-        response3 = requests.put(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response3 = MyRequests.put(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid},
             data={"firstName": new_name}
@@ -124,8 +124,8 @@ class TestUserEdit(BaseCase):
 
 
         # GET
-        response7 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id2}",
+        response7 = MyRequests.get(
+            f"/user/{user_id2}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -139,14 +139,14 @@ class TestUserEdit(BaseCase):
             'email': email,
             'password': password
         }
-        response4 = requests.post("https://playground.learnqa.ru/api/user/login", data=login_data)
+        response4 = MyRequests.post("/user/login", data=login_data)
 
         auth_sid = self.get_cookie(response4, "auth_sid")
         token = self.get_header(response4, "x-csrf-token")
 
         # GET
-        response5 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response5 = MyRequests.get(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -166,7 +166,7 @@ class TestUserEdit(BaseCase):
         # REGISTER
         email = 'vinkotovexample.com'
         register_data = self.prepere_registration_data(email)
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_data)
+        response1 = MyRequests.post("/user/", data=register_data)
         Assertions.assert_code_status(response1, 400)
         # Assertions.assert_json_has_key(response1, "id")
 
@@ -178,7 +178,7 @@ class TestUserEdit(BaseCase):
     def test_edit4_just_created_user_with_name_one_character_longt(self):
         # REGISTER
         register_data = self.prepere_registration_data(maxlen=1)
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_data)
+        response1 = MyRequests.post("/user/", data=register_data)
         Assertions.assert_code_status(response1, 400)
 
         print(response1.text)
