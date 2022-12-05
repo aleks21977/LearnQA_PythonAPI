@@ -1,7 +1,7 @@
-import requests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
-from requests_toolbelt.utils import dump
+from lib.my_requests import MyRequests
+
 
 class TestUserDelete(BaseCase):
 
@@ -13,14 +13,14 @@ class TestUserDelete(BaseCase):
             'password': '1234'
         }
 
-        response1 = requests.post("https://playground.learnqa.ru/api/user/login", data=login_data)
+        response1 = MyRequests.post("/user/login", data=login_data)
 
         auth_sid = self.get_cookie(response1, "auth_sid")
         token = self.get_header(response1, "x-csrf-token")
 
         # DELETE
-        response2 = requests.delete(
-            "https://playground.learnqa.ru/api/user/2",
+        response2 = MyRequests.delete(
+            "/user/2",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -36,7 +36,7 @@ class TestUserDelete(BaseCase):
     def test_delete_with_new_register_user(self):
         # REGISTER
         register_data = self.prepere_registration_data()
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_data)
+        response1 = MyRequests.post("/user/", data=register_data)
         Assertions.assert_code_status(response1, 200)
         Assertions.assert_json_has_key(response1, "id")
 
@@ -50,22 +50,22 @@ class TestUserDelete(BaseCase):
             'email': email,
             'password': password
         }
-        response2 = requests.post("https://playground.learnqa.ru/api/user/login", data=login_data)
+        response2 = MyRequests.post("/user/login", data=login_data)
 
         auth_sid = self.get_cookie(response2, "auth_sid")
         token = self.get_header(response2, "x-csrf-token")
 
         # GET
-        response3 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response3 = MyRequests.get(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
         print(response3.text)
 
         # DELETE
-        response4 = requests.delete(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response4 = MyRequests.delete(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -74,8 +74,8 @@ class TestUserDelete(BaseCase):
         print(response4.text)
 
         # GET
-        response5 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response5 = MyRequests.get(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -88,7 +88,7 @@ class TestUserDelete(BaseCase):
     def test_delete_anothe_user(self):
         # REGISTER
         register_data = self.prepere_registration_data()
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_data)
+        response1 = MyRequests.post("/user/", data=register_data)
         Assertions.assert_code_status(response1, 200)
         Assertions.assert_json_has_key(response1, "id")
 
@@ -102,22 +102,22 @@ class TestUserDelete(BaseCase):
             'email': email,
             'password': password
         }
-        response2 = requests.post("https://playground.learnqa.ru/api/user/login", data=login_data)
+        response2 = MyRequests.post("/user/login", data=login_data)
 
         auth_sid = self.get_cookie(response2, "auth_sid")
         token = self.get_header(response2, "x-csrf-token")
 
         # GET
-        response3 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response3 = MyRequests.get(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
         print(response3.text)
 
         # DELETE
-        response4 = requests.delete(
-            f"https://playground.learnqa.ru/api/user/53613",
+        response4 = MyRequests.delete(
+            f"/user/53613",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
@@ -126,8 +126,8 @@ class TestUserDelete(BaseCase):
         print(response4.text)
 
         # GET
-        response5 = requests.get(
-            f"https://playground.learnqa.ru/api/user/{user_id}",
+        response5 = MyRequests.get(
+            f"/user/{user_id}",
             headers={"x-csrf-token": token},
             cookies={"auth_sid": auth_sid}
         )
